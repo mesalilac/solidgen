@@ -28,7 +28,7 @@ def cli():
     pass
 
 
-@cli.command(help="Init components directory")
+@cli.command(help="Initialization components directory")
 @click.argument("target", type=click.Choice(["comps", "pages"], case_sensitive=False))
 @click.option("--yes", "-y", is_flag=True, help="Skip confirmation")
 def init(target: str, yes: bool):
