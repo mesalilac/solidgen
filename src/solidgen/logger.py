@@ -1,5 +1,6 @@
 from click import echo, style
 from enum import IntEnum
+import time
 
 
 class LogLevel(IntEnum):
@@ -19,8 +20,9 @@ class Logger:
 
     def _format_log(self, level, msg, color) -> str:
         padded_level = level.center(self.width)
+        timestamp = style(time.strftime("%Y-%m-%d_%H:%M:%S"), fg="bright_black")
 
-        prefix = "[" + style(padded_level, fg=color) + "]"
+        prefix = f"{timestamp}" + " " + "[" + style(padded_level, fg=color) + "]"
         message = style(msg, fg="white")
 
         return prefix + " " + message
