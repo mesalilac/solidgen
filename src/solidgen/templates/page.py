@@ -4,7 +4,7 @@ from io import StringIO
 class PageTemplate:
     def __init__(self, name: str) -> None:
         self.kind = "page"
-        self.name = name
+        self.name = name + "Page"
         self.indent_width = 4
         self.b = StringIO()
 
