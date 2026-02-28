@@ -42,13 +42,13 @@ def init_comp(skip_confirm: bool):
         return
 
     if not COMPONENTS_DIR_PATH.exists():
-        logger.info(
+        logger.success(
             f"Initialization: Creating components directory at '{COMPONENTS_DIR_PATH}'"
         )
         COMPONENTS_DIR_PATH.mkdir(parents=True)
 
     if not COMPONENTS_INDEX_FILE_PATH.exists():
-        logger.info(
+        logger.success(
             f"Initialization: Creating index file at '{COMPONENTS_INDEX_FILE_PATH}'"
         )
         COMPONENTS_INDEX_FILE_PATH.write_text(
@@ -75,11 +75,15 @@ def init_pages(skip_confirm: bool):
         return
 
     if not PAGES_DIR_PATH.exists():
-        logger.info(f"Initialization: Creating pages directory at '{PAGES_DIR_PATH}'")
+        logger.success(
+            f"Initialization: Creating pages directory at '{PAGES_DIR_PATH}'"
+        )
         PAGES_DIR_PATH.mkdir(parents=True)
 
     if not PAGES_INDEX_FILE_PATH.exists():
-        logger.info(f"Initialization: Creating index file at '{PAGES_INDEX_FILE_PATH}'")
+        logger.success(
+            f"Initialization: Creating index file at '{PAGES_INDEX_FILE_PATH}'"
+        )
         PAGES_INDEX_FILE_PATH.write_text(
             BIOME_DISABLE_IMPORT_SORT,
             encoding="utf-8",
@@ -157,8 +161,8 @@ def comp(component_name: str, type: ComponentType, dry_run: bool):
     with open(COMPONENTS_INDEX_FILE_PATH, "a", encoding="utf-8") as f:
         f.write(f"export * from './{component_name}';\n")
 
-    logger.info(f"Component created '{component_path}'")
-    logger.info(f"Component added to index file '{COMPONENTS_INDEX_FILE_PATH}'")
+    logger.success(f"Component created '{component_path}'")
+    logger.success(f"Component added to index file '{COMPONENTS_INDEX_FILE_PATH}'")
 
 
 @cli.command(help="Generate pages")
@@ -210,8 +214,8 @@ def page(page_name: str, dry_run: bool):
     with open(PAGES_INDEX_FILE_PATH, "a", encoding="utf-8") as f:
         f.write(f"export * from './{page_name}';\n")
 
-    logger.info(f"Page created '{page_path}'")
-    logger.info(f"Page added to index file '{PAGES_INDEX_FILE_PATH}'")
+    logger.success(f"Page created '{page_path}'")
+    logger.success(f"Page added to index file '{PAGES_INDEX_FILE_PATH}'")
 
 
 if __name__ == "__main__":
