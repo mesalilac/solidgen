@@ -1,10 +1,10 @@
-import sys
+from solidgen.scaffold import scaffold_template
+from solidgen.templates import ComponentTemplate, PageTemplate
 import click
 
 from pathlib import Path
 from .logger import logger
 from .types import ComponentType
-from .tsx import Tsx
 
 BIOME_DISABLE_IMPORT_SORT = (
     "/** biome-ignore-all assist/source/organizeImports: false */\n\n"
@@ -121,48 +121,11 @@ def init(target: str, yes: bool):
     help="Print generated code without writing to filesystem",
 )
 def comp(component_name: str, type: ComponentType, dry_run: bool):
-    component_name = toPascalCase(component_name)
+    name = toPascalCase(component_name)
 
-    tsx = Tsx(component_name, type).build_component()
+    template = ComponentTemplate(name, type)
 
-    if dry_run:
-        print(tsx)
-        sys.exit(0)
-
-    if not COMPONENTS_DIR_PATH.exists():
-        logger.warning(f"Components directory not found at '{COMPONENTS_DIR_PATH}'")
-        init_comp(True)
-
-    component_path = COMPONENTS_DIR_PATH / component_name
-
-    if component_path.exists():
-        logger.error(f"Component already exists '{component_path}'")
-        sys.exit(1)
-
-    if component_path.exists():
-        logger.error(f"Component already exists '{component_path}'")
-        sys.exit(1)
-
-    component_path.mkdir(parents=True)
-
-    css_file = component_path / f"{component_name}.module.css"
-    css_file.touch()
-
-    tsx_file = component_path / f"{component_name}.tsx"
-    tsx_file.write_text(tsx, encoding="utf-8")
-
-    local_index_file = component_path / "index.ts"
-    local_index_file.touch()
-
-    with open(local_index_file, "a", encoding="utf-8") as f:
-        f.write(BIOME_DISABLE_IMPORT_SORT)
-        f.write(f"export * from './{component_name}';\n")
-
-    with open(COMPONENTS_INDEX_FILE_PATH, "a", encoding="utf-8") as f:
-        f.write(f"export * from './{component_name}';\n")
-
-    logger.success(f"Component created '{component_path}'")
-    logger.success(f"Component added to index file '{COMPONENTS_INDEX_FILE_PATH}'")
+    scaffold_template(template, COMPONENTS_DIR_PATH, COMPONENTS_INDEX_FILE_PATH)
 
 
 @cli.command(help="Generate pages")
@@ -174,48 +137,11 @@ def comp(component_name: str, type: ComponentType, dry_run: bool):
     help="Print generated code without writing to filesystem",
 )
 def page(page_name: str, dry_run: bool):
-    page_name = toPascalCase(page_name) + "Page"
+    name = toPascalCase(page_name)
 
-    tsx = Tsx(page_name, ComponentType.base).build_component(is_page=True)
+    template = PageTemplate(name)
 
-    if dry_run:
-        print(tsx)
-        sys.exit(0)
-
-    if not PAGES_DIR_PATH.exists():
-        logger.warning(f"Pages directory not found at '{PAGES_DIR_PATH}'")
-        init_pages(True)
-
-    page_path = PAGES_DIR_PATH / page_name
-
-    if page_path.exists():
-        logger.error(f"Page already exists '{page_path}'")
-        sys.exit(1)
-
-    if page_path.exists():
-        logger.error(f"Page already exists '{page_path}'")
-        sys.exit(1)
-
-    page_path.mkdir(parents=True)
-
-    css_file = page_path / f"{page_name}.module.css"
-    css_file.touch()
-
-    tsx_file = page_path / f"{page_name}.tsx"
-    tsx_file.write_text(tsx, encoding="utf-8")
-
-    local_index_file = page_path / "index.ts"
-    local_index_file.touch()
-
-    with open(local_index_file, "a", encoding="utf-8") as f:
-        f.write(BIOME_DISABLE_IMPORT_SORT)
-        f.write(f"export * from './{page_name}';\n")
-
-    with open(PAGES_INDEX_FILE_PATH, "a", encoding="utf-8") as f:
-        f.write(f"export * from './{page_name}';\n")
-
-    logger.success(f"Page created '{page_path}'")
-    logger.success(f"Page added to index file '{PAGES_INDEX_FILE_PATH}'")
+    scaffold_template(template, PAGES_DIR_PATH, PAGES_INDEX_FILE_PATH)
 
 
 if __name__ == "__main__":
