@@ -45,7 +45,7 @@ class ComponentTemplate:
 
     def _write_types(self, has_children: bool) -> None:
         self._w("type Props = {")
-        self._w("ref?: HTMLElement | ((el: HTMLElement) => void);", 1)
+        self._w("ref?: HTMLDivElement | ((el: HTMLDivElement) => void);", 1)
         if has_children:
             if self.type == ComponentType.parent:
                 self._w("children: JSX.Element;", 1)
