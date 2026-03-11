@@ -3,10 +3,11 @@ from io import StringIO
 
 
 class ComponentTemplate:
-    def __init__(self, name: str, type: ComponentType) -> None:
+    def __init__(self, name: str, type: ComponentType, css: bool) -> None:
         self.kind = "component"
         self.name = name
         self.type = type
+        self.css = css
         self.indent_width = 4
         self.b = StringIO()
 
@@ -40,8 +41,9 @@ class ComponentTemplate:
         self._w("} from 'solid-js';")
         self._w()
 
-        self._w(f"import styles from './{self.name}.module.css';")
-        self._w()
+        if self.css:
+            self._w(f"import styles from './{self.name}.module.css';")
+            self._w()
 
     def _write_types(self, has_children: bool) -> None:
         self._w("type Props = {")

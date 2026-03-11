@@ -11,6 +11,7 @@ BIOME_DISABLE_IMPORT_SORT = (
 
 def scaffold_template(
     template: Template,
+    css: bool,
     base_dir: Path,
     root_index_path: Path,
 ) -> None:
@@ -27,7 +28,9 @@ def scaffold_template(
 
     scaffold_dir.mkdir(parents=True)
 
-    (scaffold_dir / f"{name}.module.css").touch()
+    if css:
+        (scaffold_dir / f"{name}.module.css").touch()
+
     (scaffold_dir / f"{name}.tsx").write_text(content, encoding="utf-8")
 
     local_index_path = scaffold_dir / "index.ts"

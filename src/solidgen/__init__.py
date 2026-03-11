@@ -115,33 +115,47 @@ def init(target: str, yes: bool):
     help="SolidJS Component Type",
 )
 @click.option(
-    "--dry-run",
+    "--css",
+    "-c",
     type=bool,
     is_flag=True,
-    help="Print generated code without writing to filesystem",
+    help="Generate CSS file for the component",
 )
-def comp(component_name: str, type: ComponentType, dry_run: bool):
-    name = toPascalCase(component_name)
-
-    template = ComponentTemplate(name, type)
-
-    scaffold_template(template, COMPONENTS_DIR_PATH, COMPONENTS_INDEX_FILE_PATH)
-
-
-@cli.command(help="Generate pages")
-@click.argument("page_name", type=str)
 @click.option(
     "--dry-run",
     type=bool,
     is_flag=True,
     help="Print generated code without writing to filesystem",
 )
-def page(page_name: str, dry_run: bool):
+def comp(component_name: str, type: ComponentType, css: bool, dry_run: bool):
+    name = toPascalCase(component_name)
+
+    template = ComponentTemplate(name, type, css)
+
+    scaffold_template(template, css, COMPONENTS_DIR_PATH, COMPONENTS_INDEX_FILE_PATH)
+
+
+@cli.command(help="Generate pages")
+@click.argument("page_name", type=str)
+@click.option(
+    "--css",
+    "-c",
+    type=bool,
+    is_flag=True,
+    help="Generate CSS file for the page",
+)
+@click.option(
+    "--dry-run",
+    type=bool,
+    is_flag=True,
+    help="Print generated code without writing to filesystem",
+)
+def page(page_name: str, css, dry_run: bool):
     name = toPascalCase(page_name)
 
     template = PageTemplate(name)
 
-    scaffold_template(template, PAGES_DIR_PATH, PAGES_INDEX_FILE_PATH)
+    scaffold_template(template, css, PAGES_DIR_PATH, PAGES_INDEX_FILE_PATH)
 
 
 if __name__ == "__main__":
