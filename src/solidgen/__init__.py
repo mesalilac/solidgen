@@ -122,17 +122,28 @@ def init(target: str, yes: bool):
     help="Generate CSS file for the component",
 )
 @click.option(
+    "--dir",
+    "-d",
+    type=click.Path(path_type=Path, dir_okay=True, file_okay=False, writable=True),
+    default=".",
+    help=f"Subdirectory relative to '{COMPONENTS_DIR_PATH}'",
+)
+@click.option(
     "--dry-run",
     type=bool,
     is_flag=True,
     help="Print generated code without writing to filesystem",
 )
-def comp(component_name: str, type: ComponentType, css: bool, dry_run: bool):
+def comp(component_name: str, type: ComponentType, css: bool, dir: str, dry_run: bool):
     name = toPascalCase(component_name)
 
     template = ComponentTemplate(name, type, css)
 
-    scaffold_template(template, css, COMPONENTS_DIR_PATH, COMPONENTS_INDEX_FILE_PATH)
+    base_dir = COMPONENTS_DIR_PATH / dir
+
+    base_dir.mkdir(parents=True, exist_ok=True)
+
+    scaffold_template(template, css, base_dir, base_dir / "index.ts")
 
 
 @cli.command(help="Generate pages")
@@ -145,17 +156,28 @@ def comp(component_name: str, type: ComponentType, css: bool, dry_run: bool):
     help="Generate CSS file for the page",
 )
 @click.option(
+    "--dir",
+    "-d",
+    type=click.Path(path_type=Path, dir_okay=True, file_okay=False, writable=True),
+    default=".",
+    help=f"Subdirectory relative to '{PAGES_DIR_PATH}'",
+)
+@click.option(
     "--dry-run",
     type=bool,
     is_flag=True,
     help="Print generated code without writing to filesystem",
 )
-def page(page_name: str, css, dry_run: bool):
+def page(page_name: str, css, dir: str, dry_run: bool):
     name = toPascalCase(page_name)
 
     template = PageTemplate(name)
 
-    scaffold_template(template, css, PAGES_DIR_PATH, PAGES_INDEX_FILE_PATH)
+    base_dir = PAGES_DIR_PATH / dir
+
+    base_dir.mkdir(parents=True, exist_ok=True)
+
+    scaffold_template(template, css, base_dir, base_dir / "index.ts")
 
 
 if __name__ == "__main__":
