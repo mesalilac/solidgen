@@ -38,6 +38,12 @@ def scaffold_template(
         BIOME_DISABLE_IMPORT_SORT + f"export * from './{name}';\n", encoding="utf-8"
     )
 
+    if not root_index_path.exists():
+        root_index_path.write_text(
+            BIOME_DISABLE_IMPORT_SORT,
+            encoding="utf-8",
+        )
+
     with open(root_index_path, "a", encoding="utf-8") as f:
         f.write(f"export * from './{name}';\n")
 
