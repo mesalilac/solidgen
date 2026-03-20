@@ -36,8 +36,6 @@ class ComponentTemplate:
     def _write_imports(self, comp_type: str, has_children: bool) -> None:
         self._w("import type {")
         self._w(f"{comp_type},", 1)
-        if has_children:
-            self._w("JSX,", 1)
         self._w("} from 'solid-js';")
         self._w()
 
@@ -47,11 +45,6 @@ class ComponentTemplate:
 
     def _write_types(self, has_children: bool) -> None:
         self._w("type Props = {")
-        if has_children:
-            if self.type == ComponentType.parent:
-                self._w("children: JSX.Element;", 1)
-            else:
-                self._w("children?: JSX.Element;", 1)
         self._w("};")
         self._w()
 
