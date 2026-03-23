@@ -31,20 +31,21 @@ def scaffold_template(
     if css:
         (scaffold_dir / f"{name}.module.css").touch()
 
-    (scaffold_dir / f"{name}.tsx").write_text(content, encoding="utf-8")
+    (scaffold_dir / f"{name}.tsx").write_text(content, encoding="utf-8", newline="\n")
 
     local_index_path = scaffold_dir / "index.ts"
     local_index_path.write_text(
-        BIOME_DISABLE_IMPORT_SORT + f"export * from './{name}';\n", encoding="utf-8"
+        BIOME_DISABLE_IMPORT_SORT + f"export * from './{name}';\n",
+        encoding="utf-8",
+        newline="\n",
     )
 
     if not root_index_path.exists():
         root_index_path.write_text(
-            BIOME_DISABLE_IMPORT_SORT,
-            encoding="utf-8",
+            BIOME_DISABLE_IMPORT_SORT, encoding="utf-8", newline="\n"
         )
 
-    with open(root_index_path, "a", encoding="utf-8") as f:
+    with open(root_index_path, "a", encoding="utf-8", newline="\n") as f:
         f.write(f"export * from './{name}';\n")
 
     logger.success(f"Created {kind} '{scaffold_dir}'")

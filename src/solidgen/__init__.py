@@ -52,8 +52,7 @@ def init_comp(skip_confirm: bool):
             f"Initialization: Creating index file at '{COMPONENTS_INDEX_FILE_PATH}'"
         )
         COMPONENTS_INDEX_FILE_PATH.write_text(
-            BIOME_DISABLE_IMPORT_SORT,
-            encoding="utf-8",
+            BIOME_DISABLE_IMPORT_SORT, encoding="utf-8", newline="\n"
         )
 
 
@@ -85,8 +84,7 @@ def init_pages(skip_confirm: bool):
             f"Initialization: Creating index file at '{PAGES_INDEX_FILE_PATH}'"
         )
         PAGES_INDEX_FILE_PATH.write_text(
-            BIOME_DISABLE_IMPORT_SORT,
-            encoding="utf-8",
+            BIOME_DISABLE_IMPORT_SORT, encoding="utf-8", newline="\n"
         )
 
 
