@@ -126,13 +126,7 @@ def init(target: str, yes: bool):
     default=".",
     help=f"Subdirectory relative to '{COMPONENTS_DIR_PATH}'",
 )
-@click.option(
-    "--dry-run",
-    type=bool,
-    is_flag=True,
-    help="Print generated code without writing to filesystem",
-)
-def comp(component_name: str, type: ComponentType, css: bool, dir: str, dry_run: bool):
+def comp(component_name: str, type: ComponentType, css: bool, dir: str):
     name = toPascalCase(component_name)
 
     template = ComponentTemplate(name, type, css)
@@ -160,13 +154,7 @@ def comp(component_name: str, type: ComponentType, css: bool, dir: str, dry_run:
     default=".",
     help=f"Subdirectory relative to '{PAGES_DIR_PATH}'",
 )
-@click.option(
-    "--dry-run",
-    type=bool,
-    is_flag=True,
-    help="Print generated code without writing to filesystem",
-)
-def page(page_name: str, css, dir: str, dry_run: bool):
+def page(page_name: str, css, dir: str):
     name = toPascalCase(page_name)
 
     template = PageTemplate(name)
