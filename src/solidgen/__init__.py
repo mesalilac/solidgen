@@ -126,12 +126,19 @@ def init(target: str, yes: bool):
     default=".",
     help=f"Subdirectory relative to '{COMPONENTS_DIR_PATH}'",
 )
-def comp(component_name: str, type: ComponentType, css: bool, dir: str):
+@click.option(
+    "--base",
+    "-b",
+    type=click.Path(path_type=Path, dir_okay=True, file_okay=False, writable=True),
+    default=COMPONENTS_DIR_PATH,
+    help="Base directory",
+)
+def comp(component_name: str, type: ComponentType, css: bool, dir: Path, base: Path):
     name = toPascalCase(component_name)
 
     template = ComponentTemplate(name, type, css)
 
-    base_dir = COMPONENTS_DIR_PATH / dir
+    base_dir = base / dir
 
     base_dir.mkdir(parents=True, exist_ok=True)
 
@@ -154,12 +161,19 @@ def comp(component_name: str, type: ComponentType, css: bool, dir: str):
     default=".",
     help=f"Subdirectory relative to '{PAGES_DIR_PATH}'",
 )
-def page(page_name: str, css, dir: str):
+@click.option(
+    "--base",
+    "-b",
+    type=click.Path(path_type=Path, dir_okay=True, file_okay=False, writable=True),
+    default=PAGES_DIR_PATH,
+    help="Base directory",
+)
+def page(page_name: str, css, dir: Path, base: Path):
     name = toPascalCase(page_name)
 
     template = PageTemplate(name)
 
-    base_dir = PAGES_DIR_PATH / dir
+    base_dir = base / dir
 
     base_dir.mkdir(parents=True, exist_ok=True)
 

@@ -22,7 +22,9 @@ class ComponentTemplate:
 
     def build(self) -> str:
         comp_type = self._component_type()
-        has_children = self.type != ComponentType.void
+        has_children = (
+            self.type != ComponentType.void and self.type != ComponentType.base
+        )
 
         self._write_imports(comp_type, has_children)
         self._write_types(has_children)
