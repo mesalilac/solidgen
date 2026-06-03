@@ -1,12 +1,12 @@
-from solidgen.types import ComponentType
 from io import StringIO
+
+from solidgen.types import ComponentType
 
 
 class ComponentTemplate:
     def __init__(self, name: str, type: ComponentType, css: bool) -> None:
         self.kind = "component"
         self.name = name
-        self.props = f"{name}Props"
         self.type = type
         self.css = css
         self.indent_width = 4
@@ -28,7 +28,6 @@ class ComponentTemplate:
         )
 
         self._write_imports(comp_type, has_children)
-        self._write_types(has_children)
         self._write_component(comp_type, has_children)
 
         return self.b.getvalue()
@@ -46,13 +45,10 @@ class ComponentTemplate:
             self._w(f"import styles from './{self.name}.module.css';")
             self._w()
 
-    def _write_types(self, has_children: bool) -> None:
-        self._w(f"export type {self.props} = {{")
-        self._w("};")
-        self._w()
-
     def _write_component(self, comp_type: str, has_children: bool) -> None:
-        self._w(f"export const {self.name}: {comp_type}<{self.props}> = (props) => {{")
+        self._w(
+            f"export const {self.name}: {comp_type}<{{class?: string}}> = (props) => {{"
+        )
         self._w("return (", 1)
         self._w("<div>", 2)
         self._w(self.name, 3)
